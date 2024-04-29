@@ -3,7 +3,7 @@ const router = new express.Router
 // module.exports=router
 const upload = require('../middlewares/multerMiddleware')
 // const db = require('../connections/connection')
-const { addfile, getfile, addtag, gettag,delfile, addele , getele, sinele, elegroup, fullinfo,delele} = require('../controls/filecontrols')
+const { addfile, getfile, addtag, gettag,delfile, addele , getele, sinele, elegroup, fullinfo,delele , alltag} = require('../controls/filecontrols')
 // , addele, getele, delele, sinele, elegroup, fullinfo, addlay, getlay, dellay, addarea , getarea , sinare , eletag , tagsleft 
 // const createdetails=(name,description,callback)=>{
 //     const sql=
@@ -28,6 +28,7 @@ router.delete('/deleteele', delele)
 router.get('/singleele/:elementid', sinele)
 router.get('/groupele/:tagid', elegroup)
 router.get('/getfullinfo/:tagid', fullinfo)
+router.get('/getalltag/:tagid',alltag)
 // router.post('/layerdetail', addlay)
 // router.get('/layerdetails', getlay)
 // router.delete('/dellaydet', dellay)

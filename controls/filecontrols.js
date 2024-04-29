@@ -157,6 +157,33 @@ const sinele = async (req, res) => {
     });
 };
 
+// const alltag = async (req, res) => {
+//     const sql = `SELECT elementid FROM eledetails WHERE tagid = ?`; // Select only the tagid
+//     db.get(sql, [req.params.tagid], (err, row) => {
+//         if (err) {
+//             return res.status(500).json({ error: err.message }); // Return error response
+//         }
+//         if (!row) {
+//             return res.status(404).json({ error: 'Element not found' }); // Return 404 if element not found
+//         }
+//         res.json(row.elementid); // Send tagid value in response
+//     });
+// };
+
+const alltag=async (req, res) => {
+    const sql = `SELECT elementid FROM eledetails WHERE tagid = ?`;
+    db.all(sql, [req.params.tagid], (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        if (!rows || rows.length === 0) {
+            return res.status(404).json({ error: 'No elements found for the given tag' });
+        }
+        const elementIds = rows.map(row => row.elementid);
+        res.json(elementIds);
+    });
+};
+
 
 
 
@@ -305,6 +332,6 @@ const fullinfo = async (req, res) => {
 
 
 
-module.exports = { addfile, getfile, addtag, gettag,delfile , addele, getele , sinele, elegroup,fullinfo,delele }
+module.exports = { addfile, getfile, addtag, gettag,delfile , addele, getele , sinele, elegroup,fullinfo,delele , alltag }
 
 // , addele, getele, delele, sinele, elegroup, fullinfo, addlay, getlay, dellay, addarea, getarea, sinare , eletag , tagsleft
