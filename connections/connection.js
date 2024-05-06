@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose()
 
 // const fs = require('fs');
 
-// const databasePath = './svgdiagram.db';
+// const databasePath = './spiddiagram.db';
 
 // // Check if the file exists
 // if (fs.existsSync(databasePath)) {
@@ -50,27 +50,30 @@ CREATE TABLE IF NOT EXISTS tagdetails(
 `;
 
 
-// const createLayerTable = `
-// CREATE TABLE IF NOT EXISTS layerdetails(
-//     layerid INTEGER PRIMARY KEY AUTOINCREMENT,
-//     Areaid TEXT NOT NULL,
-//     x REAL NOT NULL ,
-//     y REAL NOT NULL,
-//     width INTEGER NOT NULL,
-//     height INTEGER NOT NULL
-// );
-// `;
-// const createAreaTable = `
-// CREATE TABLE IF NOT EXISTS areadetails(
-//     Areaid TEXT PRIMARY KEY ,
-//     Areaname TEXT NOT NULL ,
-//    Areainfo1 TEXT NOT NULL,
-//    Areainfo2 TEXT NOT NULL,
-//    Areainfo3 TEXT NOT NULL,
-//    Areainfo4 TEXT NOT NULL,
-//    Areainfo5 TEXT NOT NULL
-// );
-// `;
+const createLayerTable = `
+CREATE TABLE IF NOT EXISTS layerdetails(
+    layerid INTEGER PRIMARY KEY AUTOINCREMENT,
+    Areaid TEXT NOT NULL,
+    x REAL NOT NULL ,
+    y REAL NOT NULL,
+    width INTEGER NOT NULL,
+    height INTEGER NOT NULL,
+    filename TEXT NOT NULL
+);
+`;
+
+
+const createAreaTable = `
+CREATE TABLE IF NOT EXISTS areadetails(
+    Areaid TEXT PRIMARY KEY ,
+    Areaname TEXT NOT NULL ,
+   Areainfo1 TEXT NOT NULL,
+   Areainfo2 TEXT NOT NULL,
+   Areainfo3 TEXT NOT NULL,
+   Areainfo4 TEXT NOT NULL,
+   Areainfo5 TEXT NOT NULL
+);
+`;
 
 
 db.run(createTableQuery, (err) => {
@@ -97,20 +100,20 @@ db.run(createTagTable, (err) => {
     }
 });
 
-// db.run(createLayerTable, (err) => {
-//     if (err) {
-//         console.error('Error creating table:', err.message);
-//     } else {
-//         console.log('Table "layerdetails" created or already exists.');
-//     }
-// });
+db.run(createLayerTable, (err) => {
+    if (err) {
+        console.error('Error creating table:', err.message);
+    } else {
+        console.log('Table "layerdetails" created or already exists.');
+    }
+});
 
-// db.run(createAreaTable, (err) => {
-//     if (err) {
-//         console.error('Error creating table:', err.message);
-//     } else {
-//         console.log('Table "areadetails" created or already exists.');
-//     }
-// });
+db.run(createAreaTable, (err) => {
+    if (err) {
+        console.error('Error creating table:', err.message);
+    } else {
+        console.log('Table "areadetails" created or already exists.');
+    }
+});
 
 module.exports = db

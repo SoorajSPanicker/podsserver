@@ -224,73 +224,86 @@ const fullinfo = async (req, res) => {
     });
 }
 
-// const addlay = async (req, res) => {
-//     const { Areaid, x, y, width, height } = req.body;
-//     const sql = `INSERT INTO layerdetails (Areaid,x,y,width,height) VALUES (?,?,?,?,?)`;
-//     db.run(sql, [Areaid, x, y, width, height], function (err) {
-//         if (err) {
-//             return console.error(err.message);
-//         }
-//         res.json({ layerid: this.lastID });
-//     });
-// }
+const addlay = async (req, res) => {
+    const { Areaid, x, y, width, height , filename } = req.body;
+    const sql = `INSERT INTO layerdetails (Areaid,x,y,width,height,filename) VALUES (?,?,?,?,?,?)`;
+    db.run(sql, [Areaid, x, y, width, height , filename], function (err) {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.json({ layerid: this.lastID });
+    });
+}
 
-// const getlay = async (req, res) => {
-//     const sql = `SELECT * FROM layerdetails`;
-//     db.all(sql, [], (err, rows) => {
-//         if (err) {
-//             return console.error(err.message);
-//         }
-//         res.json(rows);
-//     });
-// }
+const getlay = async (req, res) => {
+    const sql = `SELECT * FROM layerdetails`;
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.json(rows);
+    });
+}
 
-// const dellay = async (req, res) => {
-//     const sql = `DELETE FROM layerdetails`;
-//     // db.run(sql, req.params.id, function(err) {
-//     //     if (err) {
-//     //         return console.error(err.message);
-//     //     }
-//     //     res.json({ message: "User deleted successfully.", changes: this.changes });
-//     // });
-//     db.all(sql, [], (err, rows) => {
-//         if (err) {
-//             return console.error(err.message);
-//         }
-//         res.json(rows);
-//     });
-// };
+const sinlay=async(req,res)=>{
+    const sql = `SELECT * FROM layerdetails WHERE filename = ?`;
+    db.get(sql, [req.params.filename], (err, rows) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.json(rows);
+    });
+}
 
-// const addarea = async (req, res) => {
-//     const { Areaid, Areaname, Areainfo1, Areainfo2, Areainfo3, Areainfo4, Areainfo5 } = req.body;
-//     const sql = `INSERT INTO areadetails (Areaid,Areaname,Areainfo1,Areainfo2,Areainfo3,Areainfo4,Areainfo5 ) VALUES (?,?,?,?,?,?,?)`;
-//     db.run(sql, [Areaid, Areaname, Areainfo1, Areainfo2, Areainfo3, Areainfo4, Areainfo5], function (err) {
-//         if (err) {
-//             return console.error(err.message);
-//         }
-//         res.json({ Areaid });
-//     });
-// }
 
-// const getarea = async (req, res) => {
-//     const sql = `SELECT * FROM areadetails`;
-//     db.all(sql, [], (err, rows) => {
-//         if (err) {
-//             return console.error(err.message);
-//         }
-//         res.json(rows);
-//     });
-// }
 
-// const sinare = async (req, res) => {
-//     const sql = `SELECT * FROM areadetails WHERE Areaid = ?`;
-//     db.get(sql, [req.params.Areaid], (err, row) => {
-//         if (err) {
-//             return console.error(err.message);
-//         }
-//         res.json(row);
-//     });
-// }
+
+const dellay = async (req, res) => {
+    const sql = `DELETE FROM layerdetails`;
+    // db.run(sql, req.params.id, function(err) {
+    //     if (err) {
+    //         return console.error(err.message);
+    //     }
+    //     res.json({ message: "User deleted successfully.", changes: this.changes });
+    // });
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.json(rows);
+    });
+};
+
+const addarea = async (req, res) => {
+    const { Areaid, Areaname, Areainfo1, Areainfo2, Areainfo3, Areainfo4, Areainfo5 } = req.body;
+    const sql = `INSERT INTO areadetails (Areaid,Areaname,Areainfo1,Areainfo2,Areainfo3,Areainfo4,Areainfo5 ) VALUES (?,?,?,?,?,?,?)`;
+    db.run(sql, [Areaid, Areaname, Areainfo1, Areainfo2, Areainfo3, Areainfo4, Areainfo5], function (err) {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.json({ Areaid });
+    });
+}
+
+const getarea = async (req, res) => {
+    const sql = `SELECT * FROM areadetails`;
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.json(rows);
+    });
+}
+
+const sinare = async (req, res) => {
+    const sql = `SELECT * FROM areadetails WHERE Areaid = ?`;
+    db.get(sql, [req.params.Areaid], (err, row) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.json(row);
+    });
+}
 
 // const eletag = async (req, res) => {
 //     const sql = `SELECT tagid FROM eledetails WHERE elementid= ?`;
@@ -332,6 +345,6 @@ const fullinfo = async (req, res) => {
 
 
 
-module.exports = { addfile, getfile, addtag, gettag,delfile , addele, getele , sinele, elegroup,fullinfo,delele , alltag }
+module.exports = { addfile, getfile, addtag, gettag,delfile , addele, getele , sinele, elegroup,fullinfo,delele , alltag ,addarea , getarea , addlay , getlay, sinare ,dellay , sinlay }
 
 // , addele, getele, delele, sinele, elegroup, fullinfo, addlay, getlay, dellay, addarea, getarea, sinare , eletag , tagsleft
