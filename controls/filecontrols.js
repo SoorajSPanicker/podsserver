@@ -27,6 +27,31 @@ const getfile = async (req, res) => {
     });
 }
 
+// const getsinfile=async (req, res) => {
+//     const sql = `SELECT fileload FROM docdetails WHERE docno = ?`;
+//     db.get(sql, [req.params.docno], (err, row) => {
+//         if (err) {
+//             return console.error(err.message);
+//         }
+//         const filenames = row.map(row => row.fileload);
+//         res.json(filenames);
+//     });
+// }
+
+const getsinfile=async (req, res) => {
+    const sql = `SELECT fileload FROM docdetails WHERE docno = ?`;
+    db.get(sql, [req.params.docno], (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        if (!rows || rows.length === 0) {
+            return res.status(404).json({ error: 'No elements found for the given tag' });
+        }
+       
+        res.json(rows.fileload);
+    });
+};
+
 const delfile = async (req, res) => {
     const sql = `DELETE FROM docdetails`;
     // db.run(sql, req.params.id, function(err) {
@@ -305,6 +330,96 @@ const sinare = async (req, res) => {
     });
 }
 
+// const docname = async (req, res) => {
+//     const sql = `SELECT docno FROM docdetails`;
+//     db.all(sql, [], (err, rows) => {
+//         if (err) {
+//             return console.error(err.message);
+//         }
+//         res.json(rows);
+//     });
+// }
+
+const docname=async (req, res) => {
+    const sql = `SELECT docno FROM docdetails`;
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        if (!rows || rows.length === 0) {
+            return res.status(404).json({ error: 'No elements found for the given tag' });
+        }
+        const docnos = rows.map(row => row.docno);
+        res.json(docnos);
+    });
+};
+
+const addflag = async (req, res) => {
+    const { Flagid,Flagname } = req.body;
+    const sql = `INSERT INTO flagdetails (Flagid,Flagname) VALUES (?,?)`;
+    db.run(sql, [Flagid,Flagname], function (err) {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.json({Flagname});
+    });
+}
+
+const getflag = async (req, res) => {
+    const sql = `SELECT * FROM flagdetails`;
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.json(rows);
+    });
+}
+
+// const addassiflag = async (req, res) => {
+//     const {elementid,flagname,parentdoc,connectdoc,conflagid} = req.body;
+//     const sql = `INSERT INTO docodetails (elementid,flagname,parentdoc,connectdoc,conflagid) VALUES (?,?,?,?,?)`;
+//     db.run(sql, [elementid,flagname,parentdoc,connectdoc,conflagid], function (err) {
+//         if (err) {
+//             return console.error(err.message);
+//         }
+//         res.json({flagname});
+//     });
+// }
+const addassiflag = async (req, res) => {
+    const {elementid,flagSelectedValue,filename,flagcdocname,conflagid} = req.body;
+    const sql = `INSERT INTO docodetails (elementid,flagSelectedValue,filename,flagcdocname,conflagid) VALUES (?,?,?,?,?)`;
+    db.run(sql, [elementid,flagSelectedValue,filename,flagcdocname,conflagid], function (err) {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.json({flagSelectedValue});
+    });
+}
+
+
+// elementid,flagSelectedValue,filename,flagcdocname
+const getassiflag = async (req, res) => {
+    const sql = `SELECT * FROM docodetails`;
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.json(rows);
+    });
+}
+
+const getelefldoc= async (req, res) => {
+    const sql = `SELECT flagcdocname FROM docodetails WHERE elementid = ?`;
+    db.get(sql, [req.params.elementid], (err, row) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        const docno = row.flagcdocname
+        res.json(docno);
+    });
+}
+
+
 // const eletag = async (req, res) => {
 //     const sql = `SELECT tagid FROM eledetails WHERE elementid= ?`;
 //     db.get(sql, [req.params.elementid], (err, row) => {
@@ -345,6 +460,6 @@ const sinare = async (req, res) => {
 
 
 
-module.exports = { addfile, getfile, addtag, gettag,delfile , addele, getele , sinele, elegroup,fullinfo,delele , alltag ,addarea , getarea , addlay , getlay, sinare ,dellay , sinlay }
+module.exports = { addfile, getfile, addtag, gettag,delfile , addele, getele , sinele, elegroup,fullinfo,delele , alltag ,addarea , getarea , addlay , getlay, sinare ,dellay , sinlay , docname , getsinfile, addflag ,getflag,addassiflag, getassiflag,getelefldoc }
 
 // , addele, getele, delele, sinele, elegroup, fullinfo, addlay, getlay, dellay, addarea, getarea, sinare , eletag , tagsleft

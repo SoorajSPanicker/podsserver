@@ -75,6 +75,39 @@ CREATE TABLE IF NOT EXISTS areadetails(
 );
 `;
 
+const createFlagTable = `
+CREATE TABLE IF NOT EXISTS flagdetails(
+    Flagid TEXT PRIMARY KEY ,
+    Flagname TEXT NOT NULL 
+);
+`;
+
+
+// const createdocconnectTable = `
+//   CREATE TABLE IF NOT EXISTS docodetails (
+//     elementid INTEGAR NOT NULL,
+//     flagname TEXT NOT NULL,
+//     parentdoc TEXT,
+//     connectdoc TEXT,
+//     conflagid TEXT 
+// );
+// `;
+
+const createdocconnectTable = `
+  CREATE TABLE IF NOT EXISTS docodetails (
+    elementid INTEGAR NOT NULL,
+    flagSelectedValue TEXT NOT NULL,
+    filename TEXT,
+    flagcdocname TEXT,
+    conflagid TEXT 
+);
+`;
+
+
+
+
+
+// elementid,flagSelectedValue,filename,flagcdocname
 
 db.run(createTableQuery, (err) => {
     if (err) {
@@ -115,5 +148,23 @@ db.run(createAreaTable, (err) => {
         console.log('Table "areadetails" created or already exists.');
     }
 });
+
+db.run(createFlagTable, (err) => {
+    if (err) {
+        console.error('Error creating table:', err.message);
+    } else {
+        console.log('Table "flagdetails" created or already exists.');
+    }
+});
+
+db.run( createdocconnectTable, (err) => {
+    if (err) {
+        console.error('Error creating table:', err.message);
+    } else {
+        console.log('Table "docodetails" created or already exists.');
+    }
+});
+
+
 
 module.exports = db
